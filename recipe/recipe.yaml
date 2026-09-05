@@ -1,0 +1,44 @@
+schema_version: 1
+
+context:
+  name: tokentrim
+  version: "0.1.13"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/tokentrim-${{ version }}.tar.gz
+  sha256: 379e64bb0bd2d713d9e6a9142946d613249376a9234cfaad838b1b31c4d75d30
+
+build:
+  number: 3
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - poetry-core >=1.0.0
+    - pip
+  run:
+    - python >=${{ python_min }},<4.0.0
+    - tiktoken >=0.4.0
+
+tests:
+  - python:
+      imports:
+        - tokentrim
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  summary: Easily trim messages arrays for use with GPTs.
+  license: MIT
+  license_file: LICENSE
+  homepage: https://github.com/KillianLucas/tokentrim
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
